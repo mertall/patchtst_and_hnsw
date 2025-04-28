@@ -1,7 +1,7 @@
 ## Lightweight PatchTST and HNSW Implementation
 
 ### Overview
-This project trains a lightweight PatchTST model in 10 hours for a univariate time-series—the **Australian electricity demand** series. We preprocess the series into fixed-length windows, split train/validation/test **before** training to avoid leakage, train a Transformer-based patch model to predict future windows, then index the resulting embeddings in an HNSW index for to compare brute force KNN to HNSW.
+This project trains a lightweight PatchTST model in 10 hours for a univariate time-series—the **Australian electricity demand** series. We preprocess the series into fixed-length windows, split train/test **before** training to avoid leakage, train a Transformer-based patch model to predict future windows, then index the train embeddings in an HNSW index. We will then compare brute force KNN to HNSW using the test embeddings as queries on our HNSW index of train embeddings.
 
 ---
 
@@ -67,8 +67,3 @@ These results show that the patch embeddings capture meaningful temporal pattern
    - Our Jupyter Notebook forecasts tend to smooth over small peaks and valleys. To recover these fine-grained fluctuations in a lightweight model, we propose adding a reverse-diffusion module that injects controlled noise back into the predictions.
 
 ---
-
-## Activate Virtual Environment
-
-```bash
-source transformers_venv/bin/activate
