@@ -1,4 +1,4 @@
-## Lightweight PatchTST and HNSW Implementation
+# Very smol PatchTST and lighweight HNSW
 
 ### Overview
 This project trains a lightweight PatchTST model in 10 hours for a univariate time-series—the **Australian electricity demand** series. We preprocess the series into fixed-length windows, split train/test **before** training to avoid leakage, train a Transformer-based patch model to predict future windows, then index the train embeddings in an HNSW index. We will then compare brute force KNN to HNSW using the test embeddings as queries on our HNSW index of train embeddings.
