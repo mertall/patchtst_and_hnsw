@@ -36,10 +36,10 @@ This project trains a lightweight PatchTST model in 10 hours for a univariate ti
 - **HNSW Vector Search**  
 HNSW index with all of our training data, we search our test data converted to embeddings and compare KNN to HNSW performance.
   - **Recall@5** (percentage of true nearest neighbors in top-5): 100%
-  - **Average query latency**: Brute-force total time: 0.3219s (0.003219s/query)
-                               HNSW total time: 0.0435s (0.000435s/query)
-                               Mean recall for all 5: 100.00%
-                               Speedup: approx. 7.4 × faster with HNSW
+  - **Average query latency**: Brute-force total time: 0.3219s (0.003219s/query)     
+                               HNSW total time: 0.0435s (0.000435s/query)     
+                               Mean recall for all 5: 100.00%    
+                               Speedup: approx. 7.4 × faster with HNSW    
 
 These results show that the patch embeddings capture meaningful temporal patterns and that HNSW can retrieve similar contexts with high recall and low latency. We should note that HNSW requires us to store the full index in memory for search, this means as embeddings scale our memory size will increase signficantly. We could leverage sharding to work around this issue, with potential to optimize sharding strategy based on use case.
 
