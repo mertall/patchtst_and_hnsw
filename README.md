@@ -68,5 +68,7 @@ These results show that the patch embeddings capture meaningful temporal pattern
 3. **Leverage RAG**
    - We propose applying RAG (HNSW) with a user prompting for a time series based on particular meta data. Thought is still being put into
 how we can organize the data within the DB to link word embedding to a set of data that would seed the PatchTST to forecast. Intial thoughts may be we customize indexing of HNSW to associate word embeddings as entry nodes, and then store our time series emebddingd under that entry point. This would be highly domain specific.   
+4. **Self-supervised**
+   - Use Hugging Faces Masked PatchTST and compare results to current model
 
 ---
