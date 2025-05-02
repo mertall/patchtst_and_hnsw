@@ -64,7 +64,7 @@ These results show that the patch embeddings capture meaningful temporal pattern
 1. **Transfer Learning**  
    - Pretrain on a large corpus of diverse time-series and fine-tune to target domains for few-shot forecasting. We need to develop a better understanding of how to streamline the full GiftEval datasets into training a model at once. Consideration of the different frequencies across datasets (e.g., daily, weekly, monthly) and parametezing the window length and scaling factor based kn frequency given will make this training process conical.  
 2. **Alternative Forecasting Paradigms**  
-   - Our Jupyter Notebook forecasts tend to smooth over small peaks and valleys. To recover these fine-grained fluctuations in a lightweight model, we propose adding a reverse-diffusion module that injects controlled noise back into the predictions.
+   - Our Jupyter Notebook forecasts tend to smooth over small peaks and valleys. To recover these fine-grained fluctuations in a lightweight model, we propose adding a forward diffusion step during training that injects controlled noise back into the predictions.
 3. **Leverage RAG**
    - We propose applying RAG (HNSW) with a user prompting for a time series based on particular meta data. Thought is still being put into
 how we can organize the data within the DB to link word embedding to a set of data that would seed the PatchTST to forecast. Intial thoughts may be we customize indexing of HNSW to associate word embeddings as entry nodes, and then store our time series emebddingd under that entry point. This would be highly domain specific.   
