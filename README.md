@@ -44,31 +44,14 @@ HNSW index with all of our training data, we search our test data converted to e
 
 These results show that the patch embeddings capture meaningful temporal patterns and that HNSW can retrieve similar contexts with high recall and low latency. We should note that HNSW requires us to store the full index in memory for search, this means as embeddings scale our memory size will increase signficantly. We could leverage sharding to work around this issue, with potential to optimize sharding strategy based on use case.
 
----
 
-### Areas for Improvement
+### Roadmap & Experiment Tracker
 
-- **More Training Data**  
-  Incorporate additional univariate series (e.g., weather, stock prices) or multivariate extensions to improve robustness across domains.
-- **Compute Power**  
-  Training for 50–100 epochs with larger batches on GPUs/TPUs may further reduce forecasting loss.
-- **Model Capacity**  
-  Using heavier PatchTST (more layers, higher `d_model`) could capture longer-range dependencies—at the cost of compute.
-- **HNSW Tuning**  
-  Experiment with `M` and `ef_construction` to trade off index build time, memory, and query recall/latency with much more data, evaluate use of RAG with HNSW pipeline provided contextual time series data for a specific problem.
-
----
-
-### Future Work
-
-1. **Transfer Learning**  
-   - Pretrain on a large corpus of diverse time-series and fine-tune to target domains for few-shot forecasting. We need to develop a better understanding of how to streamline the full GiftEval datasets into training a model at once. Consideration of the different frequencies across datasets (e.g., daily, weekly, monthly) and parametezing the window length and scaling factor based kn frequency given will make this training process conical.  
-2. **Alternative Forecasting Paradigms**  
-   - Our Jupyter Notebook forecasts tend to smooth over small peaks and valleys. To recover these fine-grained fluctuations in a lightweight model, we propose adding a forward diffusion step during training that injects controlled noise back into the predictions.
-3. **Leverage RAG**
-   - We propose applying RAG (HNSW) with a user prompting for a time series based on particular meta data. Thought is still being put into
-how we can organize the data within the DB to link word embedding to a set of data that would seed the PatchTST to forecast. Intial thoughts may be we customize indexing of HNSW to associate word embeddings as entry nodes, and then store our time series emebddingd under that entry point. This would be highly domain specific.   
-4. **Self-supervised**
-   - Use Hugging Faces Masked PatchTST and compare results to current model
-
----
+| ✓? | Idea                         | Hypothesis                                                                                           | Proposed Solution                                                                                                           |
+|----|------------------------------|------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| [ ] | Masked self‑supervision **In Progress** | Pre‑training with masked patches yields better representations and cuts label need.                 | Train `PatchTSTModel` (`do_mask_input=True`) for 10 epochs on only past data nd 50% of data masked, then fine‑tune with past and future; log val MSE vs scratch.                    |
+| [ ] | More training data    | A broader corpus (weather, stocks, etc.) provides richer temporal priors and lowers variance.        | Merge additional GiftEval splits;\ Consideration of the different frequencies across datasets (e.g., daily, weekly, monthly) and parametezing the window length and scaling factor based kn frequency given will make this training process conical.                           |
+| [ ] |Compute power     **In Progress**    | Longer schedules & larger batches let PatchTST converge to lower minima.                             | Train 50‑100 epochs on A100; use mixed precision + grad‑accum.                                                        |
+| [ ] | **Model capacity**          | Deeper/wider PatchTST captures longer‑range dependencies.                                            | Ablate `d_model {128,256}` × layers {2,4}.                                                                                 |
+| [ ] | **HNSW tuning**             | Index hyper‑params affect recall/latency trade‑off as corpus scales.                                 | Grid‑search `M {16,32}` × `ef_construction {100,200,400}` on >100 k embeddings.                                            |
+| [ ] | **RAG over time‑series**    | Text‑prompt retrieval | Intial thoughts may be we customize indexing of HNSW to associate word embeddings as entry nodes, and then store our time series emebddings around that entry point. This would be highly domain specific.
