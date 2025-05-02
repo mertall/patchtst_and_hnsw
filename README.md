@@ -34,7 +34,7 @@ This project trains a lightweight PatchTST model in 10 hours for a univariate ti
 ![alt text](graphs/output2.png)
 
 - **HNSW Vector Search**  
-Highly recommend resding notebook summary of how HNSW work if you are not familiar.  
+Highly recommend reading notebook summary of how HNSW work if you are not familiar.  
 HNSW index with all of our training data, we search our test data converted to embeddings and compare KNN to HNSW performance.
   - **Recall@5** (percentage of true nearest neighbors in top-5): 100%
   - **Average query latency**: Brute-force total time: 0.3219s (0.003219s/query)     
