@@ -53,7 +53,7 @@ These results show that the patch embeddings capture meaningful temporal pattern
 - **Compute Power**  
   Training for 50–100 epochs with larger batches on GPUs/TPUs may further reduce forecasting loss.
 - **Model Capacity**  
-  Upgrading to PatchTST-base (more layers, higher `d_model`) could capture longer-range dependencies—at the cost of compute.
+  Using heavier PatchTST (more layers, higher `d_model`) could capture longer-range dependencies—at the cost of compute.
 - **HNSW Tuning**  
   Experiment with `M` and `ef_construction` to trade off index build time, memory, and query recall/latency with much more data, evaluate use of RAG with HNSW pipeline provided contextual time series data for a specific problem.
 
@@ -62,9 +62,11 @@ These results show that the patch embeddings capture meaningful temporal pattern
 ### Future Work
 
 1. **Transfer Learning**  
-   - Pretrain on a large corpus of diverse time-series and fine-tune to target domains for few-shot forecasting. We need to develop a better understanding of how to streamline the full GiftEval datasets into training a model at once. Consideration of the different frequencies across datasets (e.g., daily, weekly, monthly) will be instrumental to providing the model with richer temporal context. This is just one example of the detailed handling required to translate GiftEval’s diverse time-series into a unified pretraining corpus.
-
+   - Pretrain on a large corpus of diverse time-series and fine-tune to target domains for few-shot forecasting. We need to develop a better understanding of how to streamline the full GiftEval datasets into training a model at once. Consideration of the different frequencies across datasets (e.g., daily, weekly, monthly) and parametezing the window length and scaling factor based kn frequency given will make this training process conical.  
 2. **Alternative Forecasting Paradigms**  
    - Our Jupyter Notebook forecasts tend to smooth over small peaks and valleys. To recover these fine-grained fluctuations in a lightweight model, we propose adding a reverse-diffusion module that injects controlled noise back into the predictions.
+3. **Leverage RAG**
+   - We propose applying RAG (HNSW) with a user prompting for a time series based on particular meta data. Thought is still being put into
+how we can organize the data within the DB to link word embedding to a set of data that would seed the PatchTST to forecast. Intial thoughts may be we customize indexing of HNSW to associate word embeddings as entry nodes, and then store our time series emebddingd under that entry point. This would be highly domain specific.   
 
 ---
